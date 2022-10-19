@@ -11,7 +11,7 @@ validator_cli.jar を [https://github.com/hapifhir/org.hl7.fhir.core/releases/la
 
 ## [2]JDKのバージョン
 
-JDK 11以降[https://confluence.hl7.org/pages/viewpage.action?pageId=35718580#UsingtheFHIRValidator-JDKVersion](https://confluence.hl7.org/pages/viewpage.action?pageId=35718580#UsingtheFHIRValidator-JDKVersion)
+[https://confluence.hl7.org/pages/viewpage.action?pageId=35718580#UsingtheFHIRValidator-JDKVersion](https://confluence.hl7.org/pages/viewpage.action?pageId=35718580#UsingtheFHIRValidator-JDKVersion)
 
 実行例は、OpenJDK11を利用
 
@@ -75,7 +75,7 @@ Success: 0 errors, 0 warnings, 1 notes
 ```
 
 
-[test_Patient.json](sample/test_Patient.json) 10行目の gender に不正な値（例では"Man"）を設定し、検証エラーが発生するか確認
+[test_Patient.json](sample/test_Patient.json) 15行目の gender に不正な値（例では"Man"）を設定し、検証エラーが発生するか確認
 
 
 ```
@@ -180,6 +180,8 @@ Start External Language Server %Java Server:
 
 2. 作成したクラスにパラメータを設定
 
+  **最初から作成される場合は、以下のクラスパラメータを設定してください。サンプルをそのままご利用いただく場合は修正不要です。**
+
   1で作成したクラスにパラメータを設定します。
 
   - ISJSample.FHIRValidationInteractions クラス
@@ -247,6 +249,9 @@ Start External Language Server %Java Server:
 
 3. カスタム検証用クラス（ISJSample.FHIRResourceValidator）の修正
 
+  **最初から作成される場合は、以下のクラスパラメータを設定してください。サンプルをそのままご利用いただく場合は修正不要です。**
+
+
   スーパークラスのValidateResource()をオーバーライドし、[ISJSample.FHIRValidation](/ISJSample/FHIRValidation.cls)クラスのvalidate()を呼びしています。
 
 
@@ -287,7 +292,7 @@ Start External Language Server %Java Server:
   Header|Content-Type に application/json+fhir;charset=utf-8
   Body|[PatientリソースのJSON](sample/test_Patient.json)
 
-  結果は[[4]検証のテスト](#[4]検証のテスト)と同じになる
+  結果は[[4]検証のテスト](#4検証のテスト)と同じになる
 
 
   Bundleの場合は以下の通りです。
@@ -304,7 +309,7 @@ Start External Language Server %Java Server:
 
 1. JPCoreのアーティファクトを用意する
 
-公開されているJPCoreのプロファイル [FHIR JP Core 実装ガイド](https://jpfhir.jp/jpcoreV1/)パッケージをダウンロードされるか、[公式Git](https://github.com/jami-fhir-jp-wg/jp-core-draftImplemetation) を clone して、SUSHIを利用してImplementation Guide（IG）などのJSONのファイル群（アーティファクト）を作成する方法があります。
+公開されているJPCoreのプロファイル [FHIR JP Core 実装ガイド](https://jpfhir.jp/jpcoreV1/)パッケージをダウンロードされるか、[公式Git](https://github.com/jami-fhir-jp-wg/jp-core-draft.git) を clone して、SUSHIを利用してImplementation Guide（IG）などのJSONのファイル群（アーティファクト）を作成する方法があります。
 
 *参照元：[HL7FHIR JP Core実装ガイド＜Draft Ver.1＞の公開について(ご案内)](https://www.nexehrs-cpc.jp/hl7fhir-jp-core%e5%ae%9f%e8%a3%85%e3%82%ac%e3%82%a4%e3%83%89%ef%bc%9cdraft-ver-1%ef%bc%9e%e3%81%8c%e5%85%ac%e9%96%8b%e3%81%95%e3%82%8c%e3%81%be%e3%81%97%e3%81%9f%e3%80%82/)*
 
