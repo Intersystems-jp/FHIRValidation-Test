@@ -15,6 +15,8 @@ validator_cli.jar を [https://github.com/hapifhir/org.hl7.fhir.core/releases/la
 
 実行例は、OpenJDK11を利用
 
+IRISがサポートするJDKについては、[こちら](https://docs.intersystems.com/irisforhealthlatest/csp/docbookj/DocBook.UI.Page.cls?KEY=ISP_technologies#ISP_ejb)をご参照ください。（8と11をサポート）
+
 ## [3]IRIS用Javaファイルの準備（Windowsでの例で記載します）
 
 1. 事前準備
