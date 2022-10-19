@@ -1,0 +1,1 @@
+"%JAVA_HOME%\bin\java" -cp lib\validator_cli.jar;lib\JavaValidatorFacade.jar ISJSample.JavaValidatorFacade %1 %2

@@ -1,0 +1,72 @@
+{
+    "resourceType": "Patient",
+    "meta" : {
+      "profile" : [
+        "http://jpfhir.jp/fhir/core/StructureDefinition/JP_Patient"
+      ]
+    },
+    "address": [
+      {
+        "postalCode": "1600023",
+        "text": "東京都新宿区西新宿6丁目"
+      }
+    ],
+    "birthDate": "1970-01-01",
+    "extension":[
+      {
+          "url": "http://jpfhir.jp/fhir/core/Extension/StructureDefinition/JP_Patient_Race",
+          "valueCodeableConcept": {
+              "coding": [
+                  {
+                      "system": "http://terminology.hl7.org/CodeSystem/v3-Race",
+                      "code": "2039-6",
+                      "display": "Japanese"
+                  }
+              ]
+          }
+      }
+    ],
+    "gender": "male",
+    "identifier": [
+      {
+        "value": "1001"
+      }
+    ],
+    "name": [
+      {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/iso21090-EN-representation",
+            "valueCode": "IDE"
+          }
+        ],
+        "use": "official",
+        "text": "山田 太郎",
+        "family": "山田",
+        "given": [
+          "太郎"
+        ]
+      },
+      {
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/StructureDefinition/iso21090-EN-representation",
+            "valueCode": "SYL"
+          }
+        ],
+        "use": "official",
+        "text": "ヤマダ タロウ",
+        "family": "ヤマダ",
+        "given": [
+          "タロウ"
+        ]
+      }
+    ],
+    "telecom": [
+      {
+        "system":"phone",
+        "value": "0312345678"
+      }
+    ]
+  }
+  

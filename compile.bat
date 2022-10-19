@@ -1,0 +1,1 @@
+"%JAVA_HOME%\bin\javac" java\ISJSample\JavaValidatorFacade.java -classpath lib\validator_cli.jar -d build
