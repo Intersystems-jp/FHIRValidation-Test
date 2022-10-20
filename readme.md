@@ -7,7 +7,7 @@ IRISのFHIRリポジトリからFHIR Validatorを利用する流れのイメー�
 
 ## [1]JARダウンロード
 
-validator_cli.jar を [https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar](https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar) からダウンロードし、[lib](lib)に配置（配置は任意ディレクトリ可。サンプルでは、[compile.bat](compile.bat)の中でJARの場所を指定してるので、この例では[lib](lib)以下に配置）
+validator_cli.jar を [https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar](https://github.com/hapifhir/org.hl7.fhir.core/releases/latest/download/validator_cli.jar) からダウンロードし、[lib](lib)に配置（配置は任意ディレクトリ可。サンプルでは、[compile.bat](compile.bat)／[compile.sh](compile.sh)の中でJARの場所を指定してるので、この例では[lib](lib)以下に配置）
 
 ## [2]JDKのバージョン
 
@@ -17,11 +17,11 @@ validator_cli.jar を [https://github.com/hapifhir/org.hl7.fhir.core/releases/la
 
 IRISがサポートするJDKについては、[こちら](https://docs.intersystems.com/irisforhealthlatest/csp/docbookj/DocBook.UI.Page.cls?KEY=ISP_technologies#ISP_ejb)をご参照ください。（8と11をサポート）
 
-## [3]IRIS用Javaファイルの準備（Windowsでの例で記載します）
+## [3]-1 IRIS用Javaファイルの準備（Windows）
 
 1. 事前準備
 
-    JAVA_HOMEにJavaインストールディレクトリを設定する
+    環境変JAVA_HOMEにJavaインストールディレクトリを設定する
 
 2. [JavaValidatorFacade.java](java/ISJSample/JavaValidatorFacade.java) をコンパイルする
 
@@ -35,67 +35,65 @@ IRISがサポートするJDKについては、[こちら](https://docs.intersyst
     .\updateJar.bat
     ```
 
+## [3]-2 IRIS用Javaファイルの準備（Linux）
+
+1. [JavaValidatorFacade.java](java/ISJSample/JavaValidatorFacade.java) をコンパイルする
+
+    ```
+    ./compile.sh
+    ```
+
+3. IRIS用Jarファイルを作る
+
+    ```
+    ./updateJar.sh
+    ```
+
+
 ## [4]検証のテスト
 
-サンプルファイルを利用してテスト
+検証初回実行時、プロファイルのパッケージがない場合、[https://confluence.hl7.org/display/FHIR/FHIR+Package+Cache](https://confluence.hl7.org/display/FHIR/FHIR+Package+Cache) からスキーマをダウンロードするため**初回のみ時間がかかります。**
+
+Windows の場合、以下ディレクトリに保存されます（通常のユーザの場合）。
+
+- **C:\Users\<username>\.fhir**
+
+Linuxの場合、以下ディレクトリに保存されます。
+- **~/.fhir**
+
+
+サンプルファイルを利用してテストを行います。
 
 サンプル：[test_Patient.json](sample/test_Patient.json)
 
-実行例）.\run.bat <プロファイルのJSONがあるディレクトリ> <テストするリソースのJSON>
 
-《メモ》　run.bat の第1引数はカスタムプロファイル用ファイルを配置する予定のディレクトリを指定します（空でも実行できます）。例では、[fhirprofile](fhirprofile)を指定しています。
+実行例）[.\run.bat](run.bat) または [./run.sh](run.sh) <プロファイルのJSONがあるディレクトリ> <テストするリソースのJSON>
 
-```
-PS C:\WorkSpace\FHIRValidation-Test> .\run.bat C:\WorkSpace\FHIRValidation-Test\fhirprofile\ C:\WorkSpace\FHIRValidation-Test\sample\test_Patient.json
+《メモ》　[run.bat](run.bat)／[run.sh](run.sh) の第1引数はカスタムプロファイル用ファイルを配置する予定のディレクトリを指定します（空でも実行できます）。例では、[fhirprofile](fhirprofile)を指定しています。
 
-C:\WorkSpace\FHIRValidation-Test>"C:\Program Files\jdk-11\bin\java" -cp lib\validator_cli.jar;lib\JavaValidatorFacade.jar ISJSample.JavaValidatorFacade C:\WorkSpace\FHIRValidation-Test\fhirprofile\ C:\WorkSpace\FHIRValidation-Test\sample\test_Patient.json
-  Load C:\WorkSpace\FHIRValidation-Test\fhirprofile\ - 64 resources (00:03.110)
-  Validate C:\WorkSpace\FHIRValidation-Test\sample\test_Patient.json
-Validate Patient against http://hl7.org/fhir/StructureDefinition/Patient..........20..........40..........60..........80.........|
- 00:00.358
+以下、Windowsでの実行例です（WindowsとLinuxとで出力内容に違いはありません。）。
 
-Success: 0 errors, 0 warnings, 1 notes
+1つのワーニングが出ていますが、**Success** と返ります。
 
-{
-  "resourceType" : "OperationOutcome",
-  "text" : {
-    "status" : "extensions",
-    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>All OK</p><table class=\"grid\"><tr><td><b>Severity</b></td><td><b>Location</b></td><td><b>Code</b></td><td><b>Details</b></td><td><b>Diagnostics</b></td></tr><tr><td>INFORMATION</td><td/><td>Informational Note</td><td>All OK</td><td/></tr></table></div>"
-  },
-  "extension" : [{
-    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-file",
-    "valueString" : "C:\\WorkSpace\\FHIRValidation-Test\\sample\\test_Patient.json"
-  }],
-  "issue" : [{
-    "severity" : "information",
-    "code" : "informational",
-    "details" : {
-      "text" : "All OK"
-    }
-  }]
-}
-```
-
-
-[test_Patient.json](sample/test_Patient.json) 15行目の gender に不正な値（例では"Man"）を設定し、検証エラーが発生するか確認
-
+（ワーニングの理由：meta.profileに指定しているURLが実在しないため）
 
 ```
 PS C:\WorkSpace\FHIRValidation-Test> .\run.bat C:\WorkSpace\FHIRValidation-Test\fhirprofile\ C:\WorkSpace\FHIRValidation-Test\sample\test_Patient.json
 
 C:\WorkSpace\FHIRValidation-Test>"C:\Program Files\jdk-11\bin\java" -cp lib\validator_cli.jar;lib\JavaValidatorFacade.jar ISJSample.JavaValidatorFacade C:\WorkSpace\FHIRValidation-Test\fhirprofile\ C:\WorkSpace\FHIRValidation-Test\sample\test_Patient.json
-  Load C:\WorkSpace\FHIRValidation-Test\fhirprofile\ - 64 resources (00:03.179)
+  Load hl7.terminology.r4#4.0.0 - 4164 resources (00:04.784)
+  Load C:\WorkSpace\FHIRValidation-Test\fhirprofile - 0 resources (00:00.005)
   Validate C:\WorkSpace\FHIRValidation-Test\sample\test_Patient.json
 Validate Patient against http://hl7.org/fhir/StructureDefinition/Patient..........20..........40..........60..........80.........|
- 00:00.388
+ 00:00.485
 
-*FAILURE*: 1 errors, 0 warnings, 0 notes
+Success: 0 errors, 1 warnings, 1 notes
 
 {
   "resourceType" : "OperationOutcome",
   "text" : {
     "status" : "extensions",
-    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"grid\"><tr><td><b>Severity</b></td><td><b>Location</b></td><td><b>Code</b></td><td><b>Details</b></td><td><b>Diagnostics</b></td><td><b>Source</b></td></tr><tr><td>ERROR</td><td/><td>Invalid Code</td><td>The value provided ('Man') is not in the value set 'AdministrativeGender' (http://hl7.org/fhir/ValueSet/administrative-gender|4.0.1), and a code is required from this value set) (error message = Unknown Code http://hl7.org/fhir/administrative-gender#Man in http://hl7.org/fhir/administrative-gender)</td><td/><td>No display for Extension</td></tr></table></div>"
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"grid\"><tr><td><b>Severity</b></td><td><b>Location</b></td><td><b>Code</b></td><td><b>Details</b></td><td><b>Diagnostics</b></td><td><b>Source</b></td></tr><tr><td>INFORMATION</td><td/><td>Structural Issue</td><td>Canonical URL 'http://intersystems.com/fhir/ISJSample/StructureDefinition/JP_Patient' does not resolve</td><td/><td>No display for Extension</td></tr><tr><td>WARNING</td><td/><td>Structural Issue</td><td>Profile reference 'http://intersystems.com/fhir/ISJSample/StructureDefinition/JP_Patient' has not been checked because it is unknown, and the validator is set to not fetch unknown profiles</td><td/><td>No display for Extension</td></tr></table></div>"
   },
   "extension" : [{
     "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-file",
@@ -104,7 +102,84 @@ Validate Patient against http://hl7.org/fhir/StructureDefinition/Patient........
   "issue" : [{
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
-      "valueInteger" : 10
+      "valueInteger" : 6
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 8
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueCode" : "InstanceValidator"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "TYPE_SPECIFIC_CHECKS_DT_CANONICAL_RESOLVE"
+    }],
+    "severity" : "information",
+    "code" : "structure",
+    "details" : {
+      "text" : "Canonical URL 'http://intersystems.com/fhir/ISJSample/StructureDefinition/JP_Patient' does not resolve"
+    },
+    "expression" : ["Patient.meta.profile[0]"]
+  },
+  {
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 1
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+      "valueInteger" : 2
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+      "valueCode" : "InstanceValidator"
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueCode" : "VALIDATION_VAL_PROFILE_UNKNOWN_NOT_POLICY"
+    }],
+    "severity" : "warning",
+    "code" : "structure",
+    "details" : {
+      "text" : "Profile reference 'http://intersystems.com/fhir/ISJSample/StructureDefinition/JP_Patient' has not been checked because it is unknown, and the validator is set to not fetch unknown profiles"
+    },
+    "expression" : ["Patient.meta.profile[0]"]
+  }]
+}
+```
+
+
+[test_Patient.json](sample/test_Patient.json) 15行目の gender に不正な値（例では"Man"）を設定し、検証エラーが発生するか確認
+
+今度は **FAILURE**と表示されます。（先ほどと同じワーニングに対するメッセージは省いています。）
+
+```
+PS C:\WorkSpace\FHIRValidation-Test> .\run.bat C:\WorkSpace\FHIRValidation-Test\fhirprofile\ C:\WorkSpace\FHIRValidation-Test\sample\test_Patient.json
+
+C:\WorkSpace\FHIRValidation-Test>"C:\Program Files\jdk-11\bin\java" -cp lib\validator_cli.jar;lib\JavaValidatorFacade.jar ISJSample.JavaValidatorFacade C:\WorkSpace\FHIRValidation-Test\fhirprofile\ C:\WorkSpace\FHIRValidation-Test\sample\test_Patient.json
+  Load C:\WorkSpace\FHIRValidation-Test\fhirprofile2 - 0 resources (00:00.004)
+  Validate C:\WorkSpace\FHIRValidation-Test\sample\test_Patient.json
+Validate Patient against http://hl7.org/fhir/StructureDefinition/Patient..........20..........40..........60..........80.........|
+ 00:00.428
+
+*FAILURE*: 1 errors, 1 warnings, 1 notes
+
+{
+  "resourceType" : "OperationOutcome",
+  "text" : {
+    "status" : "extensions",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table class=\"grid\"><tr><td><b>Severity</b></td><td><b>Location</b></td><td><b>Code</b></td><td><b>Details</b></td><td><b>Diagnostics</b></td><td><b>Source</b></td></tr><tr><td>ERROR</td><td/><td>Invalid Code</td><td>The value provided ('man') is not in the value set 'AdministrativeGender' (http://hl7.org/fhir/ValueSet/administrative-gender|4.0.1), and a code is required from this value set) (error message = Unknown Code http://hl7.org/fhir/administrative-gender#man in http://hl7.org/fhir/administrative-gender)</td><td/><td>No display for Extension</td></tr><tr><td>INFORMATION</td><td/><td>Structural Issue</td><td>Canonical URL 'http://intersystems.com/fhir/ISJSample/StructureDefinition/JP_Patient' does not resolve</td><td/><td>No display for Extension</td></tr><tr><td>WARNING</td><td/><td>Structural Issue</td><td>Profile reference 'http://intersystems.com/fhir/ISJSample/StructureDefinition/JP_Patient' has not been checked because it is unknown, and the validator is set to not fetch unknown profiles</td><td/><td>No display for Extension</td></tr></table></div>"
+  },
+  "extension" : [{
+    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-file",
+    "valueString" : "C:\\WorkSpace\\FHIRValidation-Test\\sample\\test_Patient.json"
+  }],
+  "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+      "valueInteger" : 15
     },
     {
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
@@ -121,21 +196,13 @@ Validate Patient against http://hl7.org/fhir/StructureDefinition/Patient........
     "severity" : "error",
     "code" : "code-invalid",
     "details" : {
-      "text" : "The value provided ('Man') is not in the value set 'AdministrativeGender' (http://hl7.org/fhir/ValueSet/administrative-gender|4.0.1), and a code is required from this value set) (error message = Unknown Code http://hl7.org/fhir/administrative-gender#Man in http://hl7.org/fhir/administrative-gender)"
+      "text" : "The value provided ('man') is not in the value set 'AdministrativeGender' (http://hl7.org/fhir/ValueSet/administrative-gender|4.0.1), and a code is required from this value set) (error message = Unknown Code http://hl7.org/fhir/administrative-gender#man in http://hl7.org/fhir/administrative-gender)"
     },
     "expression" : ["Patient.gender"]
-  }]
-}
+  },
+
 ```
 
-検証初回実行時、プロファイルのパッケージがない場合、[https://confluence.hl7.org/display/FHIR/FHIR+Package+Cache](https://confluence.hl7.org/display/FHIR/FHIR+Package+Cache) からスキーマをダウンロードするため初回のみ時間がかかります。
-
-Windows の場合、以下ディレクトリに保存されます（通常のユーザの場合）。
-
-- **C:\Users\<username>\.fhir**
-
-Linuxの場合は、以下ディレクトリに保存されます。
-- **~/.fhir**
 
 
 ## [5]ISJSample.JavaValidatorFacade クラスを実行するためJava用外部サーバを起動
@@ -294,7 +361,22 @@ Start External Language Server %Java Server:
   Header|Content-Type に application/json+fhir;charset=utf-8
   Body|[PatientリソースのJSON](sample/test_Patient.json)
 
-  結果は[[4]検証のテスト](#4検証のテスト)と同じになる
+  結果は以下の通りです。
+  ```
+  {
+    "resourceType": "OperationOutcome",
+    "issue": [
+        {
+            "severity": "information",
+            "code": "informational",
+            "diagnostics": "All OK",
+            "details": {
+                "text": "All OK"
+            }
+        }
+    ]
+}
+  ```
 
 
   Bundleの場合は以下の通りです。
@@ -319,12 +401,47 @@ Start External Language Server %Java Server:
 
 2.　1.で用意したアーティファクトをプロファイル配置用ディレクトリにコピーして検証を実行する
 
-単体テストする場合は、[run.bat](/run.bat) の第1引数にアーティファクトがあるディレクトリを指定します。
+単体テストする場合は、[run.bat](/run.bat) または [run.sh](/run.sh) の第1引数にアーティファクトがあるディレクトリを指定します。
 
 例では、 [FHIR JP Core 実装ガイド](https://jpfhir.jp/jpcoreV1/) にある V1.1のtgz版をダウンロードして展開したディレクトリにあるJSONファイルを [fhirprofile](/fhirprofile)以下にコピーした状態で実行しています。
 
+以下、Windowsでの実行例です（WindowsとLinuxとで出力内容に違いはありません。）。
+
 ```
-.\run.bat C:\WorkSpace\FHIRValidation-Test\fhirprofile C:\WorkSpace\FHIRValidation-Test\sample\test_Patient-JPCore.json
+PS C:\WorkSpace\FHIRValidation-Test> .\run.bat C:\WorkSpace\FHIRValidation-Test\fhirprofile C:\WorkSpace\FHIRValidation-Test\sample\test_Patient-JPCore.json
+
+C:\WorkSpace\FHIRValidation-Test>"C:\Program Files\jdk-11\bin\java" -cp lib\validator_cli.jar;lib\JavaValidatorFacade.jar ISJSample.JavaValidatorFacade C:\WorkSpace\FHIRValidation-Test\fhirprofile C:\WorkSpace\FHIRValidation-Test\sample\test_Patient-JPCore.json
+  Load hl7.terminology.r4#4.0.0 - 4164 resources (00:04.947)
+  Load C:\WorkSpace\FHIRValidation-Test\fhirprofile - 241 resources (00:00.465)
+Unable to generate snapshot for http://jpfhir.jp/fhir/core/StructureDefinition/JP_MedicationRequest: Attempt to use a snapshot on profile 'http://jpfhir.jp/fhir/core/StructureDefinition/JP_MedicationRequestBase' as Base for generating a snapshot for the profile http://jpfhir.jp/fhir/core/StructureDefinition/JP_MedicationRequest before it is generated
+Unable to generate snapshot for http://jpfhir.jp/fhir/core/StructureDefinition/JP_MedicationRequest_Injection: Attempt to use a snapshot on profile 'http://jpfhir.jp/fhir/core/StructureDefinition/JP_MedicationRequestBase' as Base for generating a snapshot for the profile http://jpfhir.jp/fhir/core/StructureDefinition/JP_MedicationRequest_Injection before it is generated
+Unable to generate snapshot for http://jpfhir.jp/fhir/core/StructureDefinition/JP_MedicationRequest: Profile JP_MedicationRequest (http://jpfhir.jp/fhir/core/StructureDefinition/JP_MedicationRequest), element null. Error generating snapshot: Error sorting Differential: The element MedicationRequest.dosageInstruction is out of order (and maybe others after it)
+Unable to generate snapshot for http://jpfhir.jp/fhir/core/StructureDefinition/JP_MedicationRequest_Injection: Profile JP_MedicationRequest_Injection (http://jpfhir.jp/fhir/core/StructureDefinition/JP_MedicationRequest_Injection), element null. Error generating snapshot: Error sorting Differential: The element MedicationRequest.dosageInstruction is out of order (and maybe others after it)
+  Validate C:\WorkSpace\FHIRValidation-Test\sample\test_Patient-JPCore.json
+Validate Patient against http://hl7.org/fhir/StructureDefinition/Patient..........20..........40..........60..........80.........|
+Validate Patient against http://jpfhir.jp/fhir/core/StructureDefinition/JP_Patient..........20..........40..........60..........80..........100|
+ 00:00.641
+
+Success: 0 errors, 0 warnings, 1 notes
+
+{
+  "resourceType" : "OperationOutcome",
+  "text" : {
+    "status" : "extensions",
+    "div" : "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>All OK</p><table class=\"grid\"><tr><td><b>Severity</b></td><td><b>Location</b></td><td><b>Code</b></td><td><b>Details</b></td><td><b>Diagnostics</b></td></tr><tr><td>INFORMATION</td><td/><td>Informational Note</td><td>All OK</td><td/></tr></table></div>"
+  },
+  "extension" : [{
+    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-file",
+    "valueString" : "C:\\WorkSpace\\FHIRValidation-Test\\sample\\test_Patient-JPCore.json"
+  }],
+  "issue" : [{
+    "severity" : "information",
+    "code" : "informational",
+    "details" : {
+      "text" : "All OK"
+    }
+  }]
+}
 ```
 
 実行に指定している[test_Patient-JPCore.json](sample/test_Patient-JPCore.json)には、JPCoreが定義しているextension.Race（患者の人種）の情報が含まれます。
