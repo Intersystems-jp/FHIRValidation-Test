@@ -261,13 +261,13 @@ Start External Language Server %Java Server:
 
   **管理ポータル > Health > 作成したネームスペース > Configuration Registry** に移動して以下のKeyとValueを設定します。
 
-  項目名（Key） |設定例(Value)
-  --|--|
-  /FHIR/Validation/SkipIfNoProfile|1
-  /FHIR/Validation/JavaGatewayServer|127.0.0.1
-  /FHIR/Validation/JavaGatewayPort|53272（LanguageServer起動後に表示されるポートを指定する）
-  /FHIR/Validation/ProfileLocation|C:\WorkSpace\FHIRValidation-Test\fhirprofile
-  /FHIR/Validation/TerminologyServer|（設定なし）
+  項目名（Key） |設定例(Value) | 意味
+  --|--|--|
+  /FHIR/Validation/SkipIfNoProfile|1|**設定値 1**：検証をスキップする（リソースのmeta.profileの値が空や設定されていない場合に、検証をスキップする設定です。）　／　**設定値 0**：検証をスキップしない
+  /FHIR/Validation/JavaGatewayServer|127.0.0.1|Java用外部サーバのIPアドレスまたはサーバ名
+  /FHIR/Validation/JavaGatewayPort|53272|Java用外部サーバが使用するポート番号
+  /FHIR/Validation/ProfileLocation|C:\WorkSpace\FHIRValidation-Test\fhirprofile|カスタムプロファイルのディレクトリを指定（フルパス）
+  /FHIR/Validation/TerminologyServer|（設定なし）|TerminologyサーバのURLを指定
 
 
 ## [7]FHIRリポジトリの作成
