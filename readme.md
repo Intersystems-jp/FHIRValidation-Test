@@ -233,11 +233,13 @@ Start External Language Server %Java Server:
 
 ## [6]FHIRリポジトリのカスタマイズ用クラスの準備
 
+**以下説明は、IRIS for Health 2022.1を利用した例で記載しています。**
+
 詳細は、[FHIRサーバのカスタマイズ](https://docs.intersystems.com/irisforhealthlatest/csp/docbookj/DocBook.UI.Page.cls?KEY=HXFHIR_server_customize_arch) をご参照ください。
 
 **！！FHIRリポジトリを作成する前に、ネームスペースにカスタマイズ用クラス群を準備する必要があります！！**
 
-サンプルでは、以下の説明に登場するクラス群を[ISJSample](/ISJSample/)以下に用意しています。
+サンプルでは、以下の説明に登場するクラス群を[ISJSample](/ISJSample/)以下に用意しています。インポート方法は 「5.インポート」をご参照ください。
 
 1. クラス一覧
 
@@ -335,6 +337,18 @@ Start External Language Server %Java Server:
   /FHIR/Validation/JavaGatewayPort|53272|Java用外部サーバが使用するポート番号
   /FHIR/Validation/ProfileLocation|C:\WorkSpace\FHIRValidation-Test\fhirprofile|カスタムプロファイルのディレクトリを指定（フルパス）
   /FHIR/Validation/TerminologyServer|（設定なし）|TerminologyサーバのURLを指定
+
+
+5. サンプルクラスのインポート
+
+  - VSCodeをお使いの方は、対象ネームスペースに接続後、[ISJSampleディレクトリ](/ISJSample/) を右クリックし[Import and Compile]をクリックします（または、クラス定義を **Ctrl + S** で保存することでインポートできます）。
+
+  - スタジオをお使いの方は、対象ネームスペースに接続し、[ISJSampleディレクトリ](/ISJSample/) 以下 *.clsを複数選択し、スタジオのエリアにドラッグ&ドロップすることでインポートできます。
+
+  - 管理ポータルからインポートする場合は、**管理ポータル > システムエクスプローラー > クラス > 対象ネームスペース選択 > [インポート]ボタンクリック** で表示されるインポート画面で[ISJSampleディレクトリ](/ISJSample/) を選択し、インポートを実行します。
+  詳細は図例をご参照ください。
+  ![](./Image-ClassImport.png)
+
 
 
 ## [7]FHIRリポジトリの作成
