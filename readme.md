@@ -17,11 +17,11 @@ validator_cli.jar を [https://github.com/hapifhir/org.hl7.fhir.core/releases/la
 
 IRISがサポートするJDKについては、[こちら](https://docs.intersystems.com/irisforhealthlatest/csp/docbookj/DocBook.UI.Page.cls?KEY=ISP_technologies#ISP_ejb)をご参照ください。（8と11をサポート）
 
-## [3]-1 IRIS用Javaファイルの準備（Windows）
+## [3]-1 JARの呼び出しをまとめたJavaファイルの準備（Windows）
 
 1. 事前準備
 
-    環境変JAVA_HOMEにJavaインストールディレクトリを設定する
+    環境変数JAVA_HOMEにJavaインストールディレクトリを設定する
 
 2. [JavaValidatorFacade.java](java/ISJSample/JavaValidatorFacade.java) をコンパイルする
 
@@ -29,13 +29,13 @@ IRISがサポートするJDKについては、[こちら](https://docs.intersyst
     .\compile.bat
     ```
 
-3. IRIS用Jarファイルを作る
+3. Jarファイルを作る
 
     ```
     .\updateJar.bat
     ```
 
-## [3]-2 IRIS用Javaファイルの準備（Linux）
+## [3]-2 JARの呼び出しをまとめたJavaファイルの準備（Linux）
 
 1. [JavaValidatorFacade.java](java/ISJSample/JavaValidatorFacade.java) をコンパイルする
 
@@ -43,7 +43,7 @@ IRISがサポートするJDKについては、[こちら](https://docs.intersyst
     ./compile.sh
     ```
 
-3. IRIS用Jarファイルを作る
+3. Jarファイルを作る
 
     ```
     ./updateJar.sh
@@ -401,7 +401,7 @@ Start External Language Server %Java Server:
 
 2.　1.で用意したアーティファクトをプロファイル配置用ディレクトリにコピーして検証を実行する
 
-単体テストする場合は、[run.bat](/run.bat) または [run.sh](/run.sh) の第1引数にアーティファクトがあるディレクトリを指定します。
+テストする場合は、[run.bat](/run.bat) または [run.sh](/run.sh) の第1引数にアーティファクトがあるディレクトリを指定します。
 
 例では、 [FHIR JP Core 実装ガイド](https://jpfhir.jp/jpcoreV1/) にある V1.1のtgz版をダウンロードして展開したディレクトリにあるJSONファイルを [fhirprofile](/fhirprofile)以下にコピーした状態で実行しています。
 
